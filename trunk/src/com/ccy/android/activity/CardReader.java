@@ -62,7 +62,7 @@ public class CardReader {
 		Tx_Buffer[8] = calcEcc();
 		Tx_Buffer[9] = 0x03;
 		process_cmd();
-		if(Rx_Buffer[3] == 0x00 && Rx_Buffer[4] == 0x00)
+		if(rx_length > 0 && Rx_Buffer[3] == 0x00 && Rx_Buffer[4] == 0x00)
 		{
 		  return 0;
 		}
@@ -81,7 +81,7 @@ public class CardReader {
 		Tx_Buffer[7] = calcEcc();
 		Tx_Buffer[8] = 0x03;
 		process_cmd();
-		if(Rx_Buffer[3] == 0x00 && Rx_Buffer[4] == 0x00)
+		if(rx_length > 0 && Rx_Buffer[3] == 0x00 && Rx_Buffer[4] == 0x00)
 		{
 			bell_control();
 			return 0;

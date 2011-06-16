@@ -17,17 +17,40 @@ public class MainActivity extends Activity {
     static final String DEBUG_TAG = "DEBUG";
     private int port = 3333;
     private String ServerIP = "58.41.211.124" ;
+    public static String message;
+    public Boolean flag;
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        HardwareControler.setLedState(0, 1);
-        new CardReaderThread().start();
+        HardwareControler.setLedState(0, 1);       
         
     }
-    class CardReaderThread extends Thread
+    
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		flag = true;
+		new CardReaderThread().start();
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		flag = false;
+		super.onPause();
+	}
+
+	class CardReaderThread extends Thread
     {
     	public void run()
     	{
@@ -36,10 +59,10 @@ public class MainActivity extends Activity {
     		CardReader.led_control((byte)0x01);
             CardReader.bell_control();
             CardReader.power_on_card();
-            while(true)
+            while(flag)
             {
             	try {
-    				Thread.sleep(200);
+    				Thread.sleep(1000);
     			} catch (InterruptedException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
@@ -47,7 +70,7 @@ public class MainActivity extends Activity {
     	        ret = CardReader.active_card();
     	        if(ret == 0)
     	        {
-    	        	String message = CardReader.Rx_Buffer.toString() + "\r\n"; 
+    	        	message = CardReader.Rx_Buffer.toString() + "\r\n"; 
     	        	Log.d(DEBUG_TAG,"message = " + message);
     	        	Log.d(DEBUG_TAG,"length = " + message.length());
     	        	try 
@@ -85,6 +108,7 @@ public class MainActivity extends Activity {
     	    		Intent intent = new Intent();
     	    		intent.setClass(MainActivity.this, SecondActivity.class);
     	    		startActivity(intent);
+    	    		break;
     	        }
             }
     	}
