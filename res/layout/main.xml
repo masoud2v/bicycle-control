@@ -8,7 +8,6 @@
     android:textSize="35sp"
     android:textColor="#aaaa00"
     android:layout_width="wrap_content" 
-    android:id="@+id/textView1" 
     android:text="@string/hello" 
     android:gravity="center_vertical" 
     android:layout_gravity="center" 
