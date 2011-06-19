@@ -76,8 +76,10 @@ public class CardReader {
 		Tx_Buffer[2] = (byte) (tx_length & 0xff);
 		Tx_Buffer[3] = 0x32;
 		Tx_Buffer[4] = 0x24;
-		Tx_Buffer[5] = (byte) 0xff;
-		Tx_Buffer[6] = (byte) 0xff;
+		Tx_Buffer[5] = 0x00;
+		Tx_Buffer[6] = 0x00;
+//		Tx_Buffer[5] = (byte) 0xff;
+//		Tx_Buffer[6] = (byte) 0xff;
 		Tx_Buffer[7] = calcEcc();
 		Tx_Buffer[8] = 0x03;
 		process_cmd();
