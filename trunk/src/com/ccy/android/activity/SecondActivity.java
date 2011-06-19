@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 public class SecondActivity extends Activity implements OnClickListener {
 	private TextView textView;
+	private TextView TimeOutView;
+	private int timeOut = 12;
 	private Button btn_get_bicycle,btn_print,btn_exit;
 	Handler handler = new Handler();
 	Runnable runnable = new Runnable(){
@@ -19,7 +21,10 @@ public class SecondActivity extends Activity implements OnClickListener {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			finish();
+			handler.postDelayed(runnable, 1000);
+			TimeOutView.setText(Integer.toString(--timeOut));
+			if(timeOut == 0)
+				finish();
 		}
 		
 	};
@@ -30,6 +35,8 @@ public class SecondActivity extends Activity implements OnClickListener {
 		this.setContentView(R.layout.second);
 		textView = (TextView) this.findViewById(R.id.tv1);
 		textView.setText(MainActivity.message);	
+		TimeOutView = (TextView) this.findViewById(R.id.tv2);
+		TimeOutView.setText("12");
 		btn_get_bicycle = (Button) this.findViewById(R.id.btn1);
 		btn_print = (Button) this.findViewById(R.id.btn2);
 		btn_exit = (Button) this.findViewById(R.id.btn3);
@@ -37,7 +44,7 @@ public class SecondActivity extends Activity implements OnClickListener {
 		btn_get_bicycle.setOnClickListener(this);
 		btn_print.setOnClickListener(this);
 		btn_exit.setOnClickListener(this);
-		handler.postDelayed(runnable, 5000);
+		handler.postDelayed(runnable, 2000);
 	}
 	@Override
 	public void onClick(View v) {

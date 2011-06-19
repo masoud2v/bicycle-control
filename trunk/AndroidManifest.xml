@@ -14,5 +14,12 @@
             </intent-filter>
         </activity>
 		<activity android:name=".SecondActivity" ></activity>
-    </application>
+		<receiver android:name=".BootBroadcastReceiver"
+		android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+		>
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"></action>
+			</intent-filter>
+		</receiver>
+    </application> 
 </manifest>
