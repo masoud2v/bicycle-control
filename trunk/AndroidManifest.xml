@@ -14,6 +14,10 @@
             </intent-filter>
         </activity>
 		<activity android:name=".SecondActivity" ></activity>
+		<activity android:name=".RentBicycle" ></activity>
+		<activity android:name=".EvCharge" ></activity>
+		<activity android:name=".History" ></activity>
+		<activity android:name=".ManualChoose" ></activity>
 		<receiver android:name=".BootBroadcastReceiver"
 		android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
 		>

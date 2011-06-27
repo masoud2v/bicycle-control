@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 public class SecondActivity extends Activity implements OnClickListener {
 	private TextView textView;
 	private TextView TimeOutView;
-	private int timeOut = 12;
-	private Button btn_get_bicycle,btn_print,btn_exit;
+	private int timeOut = 10;
+	private Button btn_get_bicycle,btn_charge,btn_history,btn_exit;
 	Handler handler = new Handler();
 	Runnable runnable = new Runnable(){
 
@@ -34,15 +33,17 @@ public class SecondActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.second);
 		textView = (TextView) this.findViewById(R.id.tv1);
-		textView.setText(MainActivity.message);	
+		textView.setText("ÄúºÃ£¬"+MainActivity.name+"£¬ÇëÑ¡Ôñ£º");	
 		TimeOutView = (TextView) this.findViewById(R.id.tv2);
-		TimeOutView.setText("12");
+		TimeOutView.setText("10");
 		btn_get_bicycle = (Button) this.findViewById(R.id.btn1);
-		btn_print = (Button) this.findViewById(R.id.btn2);
-		btn_exit = (Button) this.findViewById(R.id.btn3);
+		btn_charge = (Button) this.findViewById(R.id.btn2);
+		btn_history = (Button) this.findViewById(R.id.btn3);
+		btn_exit = (Button) this.findViewById(R.id.btn4);
 		
 		btn_get_bicycle.setOnClickListener(this);
-		btn_print.setOnClickListener(this);
+		btn_charge.setOnClickListener(this);
+		btn_history.setOnClickListener(this);
 		btn_exit.setOnClickListener(this);
 		handler.postDelayed(runnable, 2000);
 	}
@@ -51,13 +52,21 @@ public class SecondActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn1:
+			Intent intent1 = new Intent(SecondActivity.this, RentBicycle.class);
+			this.startActivity(intent1);
 			break;
 		case R.id.btn2:
+			Intent intent2 = new Intent(SecondActivity.this, EvCharge.class);
+			this.startActivity(intent2);
 			break;
 		case R.id.btn3:
-			finish();
+			Intent intent3 = new Intent(SecondActivity.this, History.class);
+			this.startActivity(intent3);
+			break;
+		case R.id.btn4:
 			break;
 		}
+		finish();
 	}
 
 }
