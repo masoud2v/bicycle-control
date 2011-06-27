@@ -99,7 +99,7 @@ public class CardReader {
 	}
 	private static void process_cmd() {
 		// TODO Auto-generated method stub
-		int fd = HardwareControler.openSerialPort("/dev/s3c2410_serial2", 57600, 8, 1);
+		int fd = HardwareControler.openSerialPort(MainActivity.SCANNER_UART_PORT, 57600, 8, 1);
 		HardwareControler.write(fd, Tx_Buffer);
 		
 		try {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="10dip"
+    >
+    <TextView     
+    android:id="@+id/rentInfo" 
+    android:textSize="20sp"
+    android:text="hello, SecondActivity"     
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content" 
+    >
+    </TextView>
+   
+	
+	<Button
+	android:id="@+id/auto"
+	android:textSize="20sp"
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"
+	android:text="自动选车" 
+	android:layout_margin="10dip"	
+	/>
+	<Button
+	android:id="@+id/manual"
+	android:textSize="20sp"
+	android:layout_width="wrap_content" 
+	android:layout_height="wrap_content"
+	android:text="手动选车" 
+	android:layout_margin="10dip"	
+	/>
+	<TextView 
+	android:layout_height="wrap_content" 
+	android:layout_width="wrap_content" 
+	android:textSize="30sp" 
+	android:id="@+id/TimeOutInfo" 
+	android:textColor="#aaaa00" 
+	android:text="10" 
+	android:layout_gravity="right">
+	</TextView>
+</LinearLayout>

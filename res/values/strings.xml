@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">公共自行车租赁管理系统</string>
+    <string name="hello">智能自行车租赁及电动车充电系统</string>
     <string name="app_name">BicycleControl</string>
 </resources>
