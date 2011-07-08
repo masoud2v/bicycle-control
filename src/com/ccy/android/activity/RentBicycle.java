@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class RentBicycle extends Activity implements OnClickListener {
 	private Button auto_btn;
 	private Button manual_btn;
 	private TextView RentInfo;
+	private int i = 0;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -54,5 +56,31 @@ public class RentBicycle extends Activity implements OnClickListener {
 		}
 		
 	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+	//	return super.onKeyDown(keyCode, event);
+		return true;
+	}
 
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		switch(keyCode)
+		{
+		case KeyEvent.KEYCODE_DPAD_DOWN:
+			i++;
+			if(i==2)i=1;
+			break;
+		case KeyEvent.KEYCODE_DPAD_UP:
+			i--;
+			if(i==-1)i=0;
+			break;
+		}
+		this.findViewById(R.id.auto+i).requestFocus();
+		return super.onKeyUp(keyCode, event);
+		
+	}
+	
 }

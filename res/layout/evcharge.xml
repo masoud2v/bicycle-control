@@ -46,7 +46,7 @@
 		</RadioGroup>
 		
 		<Button 
-		android:id="@+id/cancel_btn" 
+		android:id="@+id/cancel1_btn" 
 		android:textSize="20sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
@@ -54,12 +54,12 @@
 		android:text="取消" 
 		/>
 		<Button 
-		android:id="@+id/ok_btn" 
+		android:id="@+id/ok1_btn" 
 		android:textSize="20sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup"
-		android:layout_toRightOf="@id/cancel_btn"
+		android:layout_toRightOf="@id/cancel1_btn"
 		android:text="确定" 
 		/>
 </RelativeLayout>

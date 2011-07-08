@@ -1,19 +1,23 @@
 package com.ccy.android.activity;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import com.ccy.android.activity.R;
 
 public class SecondActivity extends Activity implements OnClickListener {
 	private TextView textView;
 	private TextView TimeOutView;
 	private int timeOut = 10;
 	private Button btn_get_bicycle,btn_charge,btn_history,btn_exit;
+	private int i = 0;
 	Handler handler = new Handler();
 	Runnable runnable = new Runnable(){
 
@@ -46,6 +50,33 @@ public class SecondActivity extends Activity implements OnClickListener {
 		btn_history.setOnClickListener(this);
 		btn_exit.setOnClickListener(this);
 		handler.postDelayed(runnable, 2000);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+	//	return super.onKeyDown(keyCode, event);
+		return true;
+	}
+
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		switch(keyCode)
+		{
+		case KeyEvent.KEYCODE_DPAD_DOWN:
+			i++;
+			if(i==4)i=3;
+			break;
+		case KeyEvent.KEYCODE_DPAD_UP:
+			i--;
+			if(i==-1)i=0;
+			break;
+		}
+		this.findViewById(R.id.btn1+i).requestFocus();
+		return super.onKeyUp(keyCode, event);
+		
 	}
 	@Override
 	public void onClick(View v) {
