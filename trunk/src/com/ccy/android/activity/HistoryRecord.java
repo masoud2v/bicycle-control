@@ -52,7 +52,7 @@ public class HistoryRecord {
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
 		String time = sDateFormat.format(new java.util.Date());
 		Log.i(MainActivity.DEBUG_TAG,time);
-		HistoryRecord historyRecord = new HistoryRecord(Integer.parseInt(MainActivity.name),"…œ∫£",time,act);
+		HistoryRecord historyRecord = new HistoryRecord(Integer.parseInt(MainActivity.name),"Œ‰∫∫",time,act);
 		historyRecord.add(MainActivity.db);
 	}
 }
