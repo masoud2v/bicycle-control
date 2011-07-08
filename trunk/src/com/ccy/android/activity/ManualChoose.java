@@ -5,6 +5,7 @@ package com.ccy.android.activity;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,6 +21,7 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 	private Button cancel_btn;
 	private RadioGroup RG;
 	private int checkedId = 0;
+	private int i = 0;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -98,5 +100,31 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 		}
 		
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+	//	return super.onKeyDown(keyCode, event);
+		return true;
+	}
 
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		switch(keyCode)
+		{
+		case KeyEvent.KEYCODE_DPAD_DOWN:
+			i++;
+			if(i==4)i=3;
+			break;
+		case KeyEvent.KEYCODE_DPAD_UP:
+			i--;
+			if(i==-1)i=0;
+			break;
+		}
+		this.findViewById(R.id.r_btn_bike1+i).requestFocus();
+		return super.onKeyUp(keyCode, event);
+		
+	}
 }

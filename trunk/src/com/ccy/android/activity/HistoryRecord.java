@@ -48,7 +48,8 @@ public class HistoryRecord {
 	
 	public static void insert(int act)
 	{
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
 		String time = sDateFormat.format(new java.util.Date());
 		Log.i(MainActivity.DEBUG_TAG,time);
 		HistoryRecord historyRecord = new HistoryRecord(Integer.parseInt(MainActivity.name),"…œ∫£",time,act);

@@ -52,7 +52,7 @@ public class BicycleInfo {
 	{
 		byte data[] = new byte[]{0x55,0x00,0x00,0x20,(byte) 0xAA};
 		data[1] = (byte) bike_addr;
-		int fd = HardwareControler.openSerialPort("/dev/s3c2410_serial2", 115200, 8, 1);
+		int fd = HardwareControler.openSerialPort(MainActivity.SLAVE_UART_PORT, 115200, 8, 1);
 		int count = 3;
 		while(count-->0)
 		{

@@ -24,8 +24,9 @@ public class MainActivity extends Activity {
     static final int LOCK_CLOSE = 0;
     static final String DATABASE_NAME = "data.db";
     static final String BICYCLE_DATABASE_NAME = "bicycle.db";
-    static final String SLAVE_UART_PORT = "/dev/s3c2410_serial2";
+    static final String SLAVE_UART_PORT = "/dev/s3c2410_serial1";
     static final String SCANNER_UART_PORT = "/dev/s3c2410_serial3";
+    static final String PRINTER_UART_PORT = "/dev/s3c2410_serial2";
     static SQLiteDatabase db;
     static SQLiteDatabase bicycle_db;
     static BicycleInfo bicycleInfo;
@@ -44,10 +45,10 @@ public class MainActivity extends Activity {
 			handler.postDelayed(runnable, 1000);
 			if(timeout-- >= 0)
 			{
-				HardwareControler.setLedState(0, timeout%2);
+				HardwareControler.setLedState(1, timeout%2);
 			}else{
 				handler.removeCallbacks(runnable);
-				HardwareControler.setLedState(1, 0);
+				HardwareControler.setLedState(0, 1);
 			}
 			
 		}		
@@ -59,9 +60,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         title = (TextView)this.findViewById(R.id.Title);
-        title.setGravity(Gravity.CENTER);
-        HardwareControler.setLedState(0, 1);   
-        
+        title.setGravity(Gravity.CENTER); 
+        HardwareControler.setLedState(0, 1);
+        HardwareControler.setLedState(1, 0);
         db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         try{
 			db.execSQL("CREATE TABLE record (_id INTEGER PRIMARY KEY, uid INTEGER, location TEXT, time TEXT, activity INTEGER)");
@@ -81,20 +82,7 @@ public class MainActivity extends Activity {
 			
 		}
 /*		db.close();
-		this.deleteDatabase("data.db");
-		HistoryRecord historyRecord = new HistoryRecord(1,"2","3",IS_RENT_BICYCLE);
-		historyRecord.add(db);
-
-        int fd = HardwareControler.openSerialPort("/dev/s3c2410_serial2", 9600, 8, 1);
-        byte d[] = new byte[]{27,54};
-        byte cr[] = new byte []{0x0a,0x0d};
-        HardwareControler.write(fd,d);
-  //      String s="大家好，我是打印机，我是打印机，我是打印机，我是打印机！！！";
-        String s="abdafefewfasdfasdfewfaewf";
-        byte  b[] = s.getBytes();
-  //      byte b [] = new byte [] {'a','b','c'};
-        HardwareControler.write(fd, b);
-        HardwareControler.write(fd, cr);       */
+		this.deleteDatabase("data.db");*/
     }
     
 	/* (non-Javadoc)
