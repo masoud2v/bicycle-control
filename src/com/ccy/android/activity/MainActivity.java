@@ -20,19 +20,20 @@ public class MainActivity extends Activity {
     static final String DEBUG_TAG = "DEBUG";
     static final int IS_RENT_BICYCLE = 1;
     static final int IS_EV_CHARGE = 2;
+    static final int IS_RETURN_BICYCLE = 3;
     static final int LOCK_OPEN = 1;
     static final int LOCK_CLOSE = 0;
     static final String DATABASE_NAME = "data.db";
     static final String BICYCLE_DATABASE_NAME = "bicycle.db";
-    static final String SLAVE_UART_PORT = "/dev/s3c2410_serial1";
+    static final String SLAVE_UART_PORT = "/dev/s3c2410_serial2";
     static final String SCANNER_UART_PORT = "/dev/s3c2410_serial3";
-    static final String PRINTER_UART_PORT = "/dev/s3c2410_serial2";
+    static final String PRINTER_UART_PORT = "/dev/s3c2410_serial1";
     static SQLiteDatabase db;
     static SQLiteDatabase bicycle_db;
     static BicycleInfo bicycleInfo;
     private TextView title;
     private int port = 3333;
-    private String ServerIP = "58.41.82.134" ;
+    private String ServerIP = "124.76.33.110" ;
     public static String message;
     public static String name;
     public Boolean flag;
@@ -138,7 +139,9 @@ public class MainActivity extends Activity {
 							break;
 						}
 						bicycleInfo.update(bicycle_db);
-						Cursor cur = MainActivity.bicycle_db.rawQuery("SELECT * FROM bicycleinfo where addr = "+buf[2], null);
+//						Cursor cur = MainActivity.db.rawQuery("SELECT * FROM record where addr = " + buf[2], null);
+						
+						Cursor cur = MainActivity.bicycle_db.rawQuery("SELECT * FROM bicycleinfo where addr = " + buf[2], null);
 						while (cur.moveToNext())
 						{
 							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
@@ -259,7 +262,7 @@ public class MainActivity extends Activity {
     	        	
     	        	Log.d(DEBUG_TAG,"message = " + message);
     	        	Log.d(DEBUG_TAG,"length = " + message.length());
-//    	        	new DataToServer(message).start();
+    	        	new DataToServer(message).start();
     	    		Intent intent = new Intent();
     	    		intent.setClass(MainActivity.this, SecondActivity.class);
     	    		startActivity(intent);

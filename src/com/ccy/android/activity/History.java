@@ -54,6 +54,9 @@ public class History extends Activity implements OnClickListener {
 			case MainActivity.IS_RENT_BICYCLE:
 				RecordItemList += "租车  \t\t";
 				break;
+			case MainActivity.IS_RETURN_BICYCLE:
+				RecordItemList += "还车  \t\t";
+				break;
 			}
 			RecordItemList += cur.getString(cur.getColumnIndex("location"))+"  \t\t";
 			RecordItemList += cur.getString(cur.getColumnIndex("time"))+"\n";
@@ -74,7 +77,7 @@ public class History extends Activity implements OnClickListener {
 	        try {
 				HardwareControler.write(fd, RecordItemList.getBytes("GB2312"));
 				String txt = "活动  地点  时间\n您好，" + MainActivity.name + "\n" + 
-				"    \n    \n" ;
+				"    \n    \n   \n   \n    \n    \n    \n" ;
 				HardwareControler.write(fd, txt.getBytes("GB2312"));
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
@@ -107,6 +110,9 @@ public class History extends Activity implements OnClickListener {
 		case KeyEvent.KEYCODE_DPAD_UP:
 			i--;
 			if(i==-1)i=0;
+			break;
+		case KeyEvent.KEYCODE_BACK:
+			finish();
 			break;
 		}
 		this.findViewById(R.id.print_btn+i).requestFocus();

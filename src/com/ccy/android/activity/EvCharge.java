@@ -90,6 +90,9 @@ public class EvCharge extends Activity implements OnClickListener, OnCheckedChan
 			i--;
 			if(i==-1)i=0;
 			break;
+		case KeyEvent.KEYCODE_BACK:
+			finish();
+			break;
 		}
 		this.findViewById(R.id.r_btn1+i).requestFocus();
 		return super.onKeyUp(keyCode, event);

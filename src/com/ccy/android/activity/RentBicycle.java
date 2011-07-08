@@ -77,6 +77,9 @@ public class RentBicycle extends Activity implements OnClickListener {
 			i--;
 			if(i==-1)i=0;
 			break;
+		case KeyEvent.KEYCODE_BACK:
+			finish();
+			break;
 		}
 		this.findViewById(R.id.auto+i).requestFocus();
 		return super.onKeyUp(keyCode, event);
