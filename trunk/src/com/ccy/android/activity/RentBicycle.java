@@ -1,6 +1,8 @@
 package com.ccy.android.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,6 +27,20 @@ public class RentBicycle extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.rentbicycle);
+		Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name) + " AND RFID != ''", null);
+		if(cur.moveToNext())
+		{
+			new AlertDialog.Builder(this)   
+	         .setTitle("租赁信息")   
+	        .setMessage("您好，"+MainActivity.name+"，系统显示您上次租借的"+cur.getString(cur.getColumnIndex("RFID"))+"号自行车尚未归还，请归还后再重新租赁，谢谢！")    
+	       .setPositiveButton("确定",    
+	        new DialogInterface.OnClickListener(){   
+	                  public void onClick(DialogInterface dialoginterface, int i){    
+	                                 //按钮事件     
+	                	  		finish();
+	                              }    
+	                      }).show(); 
+		}
 		RentInfo = (TextView)this.findViewById(R.id.rentInfo);
 		RentInfo.setText("您好，"+MainActivity.name+"，请选择：");
 		auto_btn = (Button) this.findViewById(R.id.auto);

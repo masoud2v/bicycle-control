@@ -25,11 +25,13 @@ public class MainActivity extends Activity {
     static final int LOCK_CLOSE = 0;
     static final String DATABASE_NAME = "data.db";
     static final String BICYCLE_DATABASE_NAME = "bicycle.db";
+    static final String USERINFO_DATABASE_NAME = "userinfo.db";
     static final String SLAVE_UART_PORT = "/dev/s3c2410_serial2";
     static final String SCANNER_UART_PORT = "/dev/s3c2410_serial3";
     static final String PRINTER_UART_PORT = "/dev/s3c2410_serial1";
     static SQLiteDatabase db;
     static SQLiteDatabase bicycle_db;
+    static SQLiteDatabase userinfo_db;
     static BicycleInfo bicycleInfo;
     private TextView title;
     private int port = 3333;
@@ -66,7 +68,7 @@ public class MainActivity extends Activity {
         HardwareControler.setLedState(1, 0);
         db = this.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         try{
-			db.execSQL("CREATE TABLE record (_id INTEGER PRIMARY KEY, uid INTEGER, location TEXT, time TEXT, activity INTEGER)");
+			db.execSQL("CREATE TABLE record (_id INTEGER PRIMARY KEY, uid INTEGER, location TEXT, time TEXT, activity INTEGER, RFID TEXT)");
 		}catch (Exception e)
 		{
 			
@@ -74,10 +76,17 @@ public class MainActivity extends Activity {
 		bicycle_db = this.openOrCreateDatabase(BICYCLE_DATABASE_NAME, MODE_PRIVATE, null);
 		try{
 			bicycle_db.execSQL("CREATE TABLE bicycleinfo (_id INTEGER PRIMARY KEY, addr INTEGER, RFID TEXT, lock_status INTEGER)");
-			BicycleInfo bi= new BicycleInfo(1,"",LOCK_CLOSE);
+			BicycleInfo bi = new BicycleInfo(1,"",LOCK_CLOSE);
 			bi.add(bicycle_db);
-			BicycleInfo bi2= new BicycleInfo(2,"",LOCK_CLOSE);
+			BicycleInfo bi2 = new BicycleInfo(2,"",LOCK_CLOSE);
 			bi2.add(bicycle_db);
+		}catch (Exception e)
+		{
+			
+		}
+		userinfo_db = this.openOrCreateDatabase(USERINFO_DATABASE_NAME, MODE_PRIVATE, null);
+		try{
+			userinfo_db.execSQL("CREATE TABLE userinfo (_id INTEGER PRIMARY KEY, uid INTEGER, RFID TEXT)");
 		}catch (Exception e)
 		{
 			
@@ -128,27 +137,45 @@ public class MainActivity extends Activity {
 //						Log.i(MainActivity.DEBUG_TAG,"buf = "+buf[i]);
 					if(buf[0] == 0x55 && (int)(buf[8]&0xff) == 0xAA && buf[1] == 0x00)
 					{
-						String RFID = Integer.toHexString(buf[4])+Integer.toHexString(buf[5])+Integer.toHexString(buf[6])+Integer.toHexString(buf[7]);
+						Cursor cur;
+						String RFID = Integer.toHexString((int)buf[4]&0xff)+Integer.toHexString((int)buf[5]&0xff)+Integer.toHexString((int)buf[6]&0xff)+Integer.toHexString((int)buf[7]&0xff);
 						switch(buf[3])
 						{
 						case 0x20:
 							bicycleInfo = new BicycleInfo(buf[2],RFID,LOCK_OPEN);
 							break;
 						case 0x30:
-							bicycleInfo = new BicycleInfo(buf[2],RFID,LOCK_CLOSE);
+							bicycleInfo = new BicycleInfo(buf[2],RFID,LOCK_CLOSE);	
+							cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where RFID = '" + RFID +"'", null);
+							if(cur.moveToNext())
+							{								
+								UserInfo ui = new UserInfo(cur.getInt(cur.getColumnIndex("uid")), "");
+								ui.update(MainActivity.userinfo_db);
+								HistoryRecord.insert( MainActivity.IS_RETURN_BICYCLE, RFID, cur.getInt(cur.getColumnIndex("uid")));								
+							}
+//							cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo" , null);
+//							while(cur.moveToNext())
+//							{
+//								if(RFID.equals(cur.getString(cur.getColumnIndex("RFID"))))
+//								{
+//									UserInfo ui = new UserInfo(cur.getInt(cur.getColumnIndex("uid")), "");
+//									ui.update(MainActivity.userinfo_db);
+//									HistoryRecord.insert( MainActivity.IS_RETURN_BICYCLE, RFID, cur.getInt(cur.getColumnIndex("uid")));
+//									break;
+//								}
+//							}							
 							break;
 						}
 						bicycleInfo.update(bicycle_db);
-//						Cursor cur = MainActivity.db.rawQuery("SELECT * FROM record where addr = " + buf[2], null);
-						
-						Cursor cur = MainActivity.bicycle_db.rawQuery("SELECT * FROM bicycleinfo where addr = " + buf[2], null);
-						while (cur.moveToNext())
-						{
-							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
-							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("addr"))));
-							Log.i(DEBUG_TAG, cur.getString(cur.getColumnIndex("RFID")));
-							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("lock_status"))));					
-						}
+											
+//						cur = MainActivity.bicycle_db.rawQuery("SELECT * FROM bicycleinfo where addr = " + buf[2], null);
+//						while (cur.moveToNext())
+//						{
+//							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
+//							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("addr"))));
+//							Log.i(DEBUG_TAG, cur.getString(cur.getColumnIndex("RFID")));
+//							Log.i(DEBUG_TAG, String.valueOf(cur.getInt(cur.getColumnIndex("lock_status"))));					
+//						}
 					}
 				}
 				try {

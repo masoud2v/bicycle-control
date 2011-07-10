@@ -87,7 +87,7 @@ public class SecondActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btn1:
 			Intent intent1 = new Intent(SecondActivity.this, RentBicycle.class);
-			this.startActivity(intent1);
+			this.startActivity(intent1);			
 			break;
 		case R.id.btn2:
 			Intent intent2 = new Intent(SecondActivity.this, EvCharge.class);
