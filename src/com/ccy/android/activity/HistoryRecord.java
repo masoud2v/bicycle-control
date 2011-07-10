@@ -11,13 +11,15 @@ public class HistoryRecord {
 	private String location;
 	private String time;
 	private int activity;
+	private String RFID="";
 	
-	HistoryRecord(int id,String loc, String tm, int act)
+	HistoryRecord(int id,String loc, String tm, int act, String rfid)
 	{
 		UID = id;
 		location = loc;
 		time = tm;
 		activity =act;
+		RFID = rfid;
 	}
 	public int getUID()
 	{
@@ -35,6 +37,10 @@ public class HistoryRecord {
 	{
 		return activity;
 	}
+	public String getRFID()
+	{
+		return RFID;
+	}
 	
 	public void add(SQLiteDatabase db)
 	{
@@ -43,16 +49,17 @@ public class HistoryRecord {
 		cv.put("location", location);
 		cv.put("time", time);
 		cv.put("activity", activity);
+		cv.put("RFID", RFID);
 		db.insert("record", null, cv);
 	}
 	
-	public static void insert(int act)
+	public static void insert(int act, String rfid, int uid)
 	{
 //		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
 		String time = sDateFormat.format(new java.util.Date());
 		Log.i(MainActivity.DEBUG_TAG,time);
-		HistoryRecord historyRecord = new HistoryRecord(Integer.parseInt(MainActivity.name),"Œ‰∫∫",time,act);
+		HistoryRecord historyRecord = new HistoryRecord(uid,"Œ‰∫∫",time,act,rfid);
 		historyRecord.add(MainActivity.db);
 	}
 }

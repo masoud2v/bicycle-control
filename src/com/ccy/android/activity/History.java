@@ -7,7 +7,6 @@ import com.friendlyarm.AndroidSDK.HardwareControler;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,11 +40,11 @@ public class History extends Activity implements OnClickListener {
 		Cursor cur = MainActivity.db.rawQuery("SELECT * FROM record where uid = "+MainActivity.name, null);
 		while (cur.moveToNext())
 		{
-			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
-			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("uid"))));
-			Log.i("DEBUG", cur.getString(cur.getColumnIndex("location")));
-			Log.i("DEBUG", cur.getString(cur.getColumnIndex("time")));
-			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("activity"))));
+//			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
+//			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("uid"))));
+//			Log.i("DEBUG", cur.getString(cur.getColumnIndex("location")));
+//			Log.i("DEBUG", cur.getString(cur.getColumnIndex("time")));
+//			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("activity"))));
 			switch(cur.getInt(cur.getColumnIndex("activity")))
 			{
 			case MainActivity.IS_EV_CHARGE:

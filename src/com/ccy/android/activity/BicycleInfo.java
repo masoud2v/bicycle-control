@@ -1,7 +1,4 @@
 package com.ccy.android.activity;
-
-
-
 import com.friendlyarm.AndroidSDK.HardwareControler;
 
 import android.app.Activity;
@@ -9,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class BicycleInfo {
@@ -68,6 +66,16 @@ public class BicycleInfo {
 				}
 				if(MainActivity.bicycleInfo != null && MainActivity.bicycleInfo.getAddr() == bike_addr && MainActivity.bicycleInfo.getLock_status() == MainActivity.LOCK_OPEN)
 				{
+					HistoryRecord.insert(MainActivity.IS_RENT_BICYCLE, MainActivity.bicycleInfo.getRFID(), Integer.valueOf(MainActivity.name));
+					Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name), null);
+					if(cur.moveToNext())
+					{
+						UserInfo ui = new UserInfo(Integer.valueOf(MainActivity.name), MainActivity.bicycleInfo.getRFID());
+						ui.update(MainActivity.userinfo_db);
+					}else{
+						UserInfo.insert(MainActivity.bicycleInfo.getRFID());
+					}
+					
 					new AlertDialog.Builder(context)   
 					         .setTitle("自行车信息")   
 					        .setMessage("您好，"+MainActivity.name+"，"+bike_addr+"号车位的自行车锁已经打开\n自行车号:"+MainActivity.bicycleInfo.getRFID())    
@@ -77,8 +85,7 @@ public class BicycleInfo {
 					                                 //按钮事件     
 					                	  		activity.finish();
 					                              }    
-					                      }).show();   
-					HistoryRecord.insert(MainActivity.IS_RENT_BICYCLE);
+					                      }).show();   					
 					break;
 				}
 			}

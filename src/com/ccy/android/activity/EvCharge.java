@@ -57,7 +57,7 @@ public class EvCharge extends Activity implements OnClickListener, OnCheckedChan
 				HardwareControler.setLedState(1, 1);
 				MainActivity.timeout = 20;
 				MainActivity.handler.postDelayed(MainActivity.runnable, this.iCheckTime*60*1000 - 20000);
-				HistoryRecord.insert(MainActivity.IS_EV_CHARGE);
+				HistoryRecord.insert(MainActivity.IS_EV_CHARGE,"",Integer.valueOf(MainActivity.name));
 				finish();
 			}else{
 				Toast.makeText(EvCharge.this, "您好，请选择充电时间，谢谢！", Toast.LENGTH_LONG).show();
