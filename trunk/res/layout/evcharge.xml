@@ -3,63 +3,69 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dip"
+    android:padding="20dip"
     >
     <TextView     
     android:id="@+id/chargeInfo" 
-    android:textSize="20sp"
+    android:textSize="40sp"
     android:text="hello, SecondActivity"     
     android:layout_height="wrap_content"
     android:layout_width="wrap_content" 
+    android:layout_margin="15dip"
     >
     </TextView>
     <RadioGroup
     android:id="@+id/RadioGroup"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_below="@id/chargeInfo"
     android:layout_x="3px"
     android:layout_y="54px"
     >
     <RadioButton 
 		android:id="@+id/r_btn1" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="10分钟" 
+		android:layout_margin="10dip"
 		/>
 	<RadioButton 
 		android:id="@+id/r_btn2" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="20分钟" 
+		android:layout_margin="10dip"
 		/>
 	<RadioButton 
 		android:id="@+id/r_btn3" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="30分钟" 
+		android:layout_margin="10dip"
 		/>
 		</RadioGroup>
 		
 		<Button 
 		android:id="@+id/cancel1_btn" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup"
 		android:text="取消" 
+		android:layout_margin="10dip"	
 		/>
 		<Button 
 		android:id="@+id/ok1_btn" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup"
 		android:layout_toRightOf="@id/cancel1_btn"
 		android:text="确定" 
+		android:layout_margin="10dip"	
 		/>
 </RelativeLayout>

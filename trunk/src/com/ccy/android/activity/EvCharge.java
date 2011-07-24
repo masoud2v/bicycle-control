@@ -3,6 +3,7 @@ package com.ccy.android.activity;
 
 import com.friendlyarm.AndroidSDK.HardwareControler;
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,8 +33,8 @@ public class EvCharge extends Activity implements OnClickListener, OnCheckedChan
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.evcharge);
 		chargeInfo = (TextView) this.findViewById(R.id.chargeInfo);
-		chargeInfo.setText("您好，"+ MainActivity.name +"，请选择电动车充电时间：");
-		
+		chargeInfo.setText("您好，"+ MainActivity.nameString +"，请选择电动车充电时间：");
+		MainActivity.playMusic(MainActivity.MUSIC10);
 		ok1_btn = (Button) this.findViewById(R.id.ok1_btn);
 		cancel1_btn = (Button) this.findViewById(R.id.cancel1_btn);
 		RG = (RadioGroup) this.findViewById(R.id.RadioGroup);
@@ -53,11 +54,18 @@ public class EvCharge extends Activity implements OnClickListener, OnCheckedChan
 			if(this.checkedTime != null)
 			{
 				Toast.makeText(EvCharge.this, "您好，您的电动车正在充电，充电时间为"+this.checkedTime+"，请稍候......", Toast.LENGTH_LONG).show();
+				MainActivity.playMusic(MainActivity.MUSIC11);
 				HardwareControler.setLedState(0, 0);
 				HardwareControler.setLedState(1, 1);
 				MainActivity.timeout = 20;
 				MainActivity.handler.postDelayed(MainActivity.runnable, this.iCheckTime*60*1000 - 20000);
 				HistoryRecord.insert(MainActivity.IS_EV_CHARGE,"",Integer.valueOf(MainActivity.name));
+				Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name), null);
+				if(cur.moveToNext())
+				{
+					UserInfo ui = new UserInfo(Integer.valueOf(MainActivity.name), cur.getString(cur.getColumnIndex("RFID")), cur.getInt(cur.getColumnIndex("balance")) - MainActivity.CHARGE_PAY_UNIT * this.iCheckTime);
+					ui.update(MainActivity.userinfo_db);
+				}
 				finish();
 			}else{
 				Toast.makeText(EvCharge.this, "您好，请选择充电时间，谢谢！", Toast.LENGTH_LONG).show();
