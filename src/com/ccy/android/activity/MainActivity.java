@@ -1,6 +1,7 @@
 package com.ccy.android.activity;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -9,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,12 +25,34 @@ public class MainActivity extends Activity {
     static final int IS_RETURN_BICYCLE = 3;
     static final int LOCK_OPEN = 1;
     static final int LOCK_CLOSE = 0;
+    static final int BALANCE = 10000;
+    static final int REND_PAY = 1;
+    static final int CHARGE_PAY_UNIT = 1;
+    static final int BICYCLE_NUMBER = 3;
     static final String DATABASE_NAME = "data.db";
     static final String BICYCLE_DATABASE_NAME = "bicycle.db";
     static final String USERINFO_DATABASE_NAME = "userinfo.db";
     static final String SLAVE_UART_PORT = "/dev/s3c2410_serial2";
     static final String SCANNER_UART_PORT = "/dev/s3c2410_serial3";
     static final String PRINTER_UART_PORT = "/dev/s3c2410_serial1";
+    static final String MUSIC1 = "/mnt/sdcard/一号电动车充电完成，请取出充电把手，放回原位.wav";
+    static final String MUSIC2 = "/mnt/sdcard/充电即将完成，请注意.wav";
+    static final String MUSIC3 = "/mnt/sdcard/操作失败，请重试.wav";
+    static final String MUSIC4 = "/mnt/sdcard/欢迎进入智能公共自行车租赁系统及电动车充电系统.wav";
+    static final String MUSIC5 = "/mnt/sdcard/正在打印，请稍候，完成后请取凭条.wav";
+    static final String MUSIC6 = "/mnt/sdcard/请去1号锁位取车.wav";
+    static final String MUSIC7 = "/mnt/sdcard/请去2号锁位取车.wav";
+    static final String MUSIC8 = "/mnt/sdcard/请去3号锁位取车.wav";
+    static final String MUSIC9 = "/mnt/sdcard/请选择“自动选车或者手动选车”.wav";
+    static final String MUSIC10 = "/mnt/sdcard/请选择充电时间.wav";
+    
+    static final String MUSIC11 = "/mnt/sdcard/一号电动车正在充电，请稍候.wav";
+    static final String MUSIC12 = "/mnt/sdcard/刷卡失败，请重刷.wav";
+    static final String MUSIC13 = "/mnt/sdcard/您以前的租车未还，请先还车.wav";
+    
+    static final String USER1 = "陈先生";
+    static final String USER2 = "唐先生";
+    static final String USER3 = "周先生";
     static SQLiteDatabase db;
     static SQLiteDatabase bicycle_db;
     static SQLiteDatabase userinfo_db;
@@ -37,7 +61,8 @@ public class MainActivity extends Activity {
     private int port = 3333;
     private String ServerIP = "124.76.33.110" ;
     public static String message;
-    public static String name;
+    public static String name;//number
+    public static String nameString;
     public Boolean flag;
     static Handler handler = new Handler();
     static int timeout = 20;
@@ -46,12 +71,14 @@ public class MainActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			handler.postDelayed(runnable, 1000);
+			if(timeout == 20)MainActivity.playMusic(MUSIC2);
 			if(timeout-- >= 0)
 			{
 				HardwareControler.setLedState(1, timeout%2);
-			}else{
+			}else{				
 				handler.removeCallbacks(runnable);
 				HardwareControler.setLedState(0, 1);
+				MainActivity.playMusic(MUSIC1);
 			}
 			
 		}		
@@ -80,19 +107,22 @@ public class MainActivity extends Activity {
 			bi.add(bicycle_db);
 			BicycleInfo bi2 = new BicycleInfo(2,"",LOCK_CLOSE);
 			bi2.add(bicycle_db);
+			BicycleInfo bi3 = new BicycleInfo(3,"",LOCK_CLOSE);
+			bi3.add(bicycle_db);
 		}catch (Exception e)
 		{
 			
 		}
 		userinfo_db = this.openOrCreateDatabase(USERINFO_DATABASE_NAME, MODE_PRIVATE, null);
 		try{
-			userinfo_db.execSQL("CREATE TABLE userinfo (_id INTEGER PRIMARY KEY, uid INTEGER, RFID TEXT)");
+			userinfo_db.execSQL("CREATE TABLE userinfo (_id INTEGER PRIMARY KEY, uid INTEGER, RFID TEXT, balance INTEGER)");
 		}catch (Exception e)
 		{
 			
 		}
 /*		db.close();
-		this.deleteDatabase("data.db");*/
+		this.deleteDatabase("data.db");
+		playMusic(MUSIC1);*/
     }
     
 	/* (non-Javadoc)
@@ -143,16 +173,18 @@ public class MainActivity extends Activity {
 						{
 						case 0x20:
 							bicycleInfo = new BicycleInfo(buf[2],RFID,LOCK_OPEN);
+							bicycleInfo.update(bicycle_db);
 							break;
 						case 0x30:
 							bicycleInfo = new BicycleInfo(buf[2],RFID,LOCK_CLOSE);	
 							cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where RFID = '" + RFID +"'", null);
 							if(cur.moveToNext())
 							{								
-								UserInfo ui = new UserInfo(cur.getInt(cur.getColumnIndex("uid")), "");
+								UserInfo ui = new UserInfo(cur.getInt(cur.getColumnIndex("uid")), "", cur.getInt(cur.getColumnIndex("balance")));
 								ui.update(MainActivity.userinfo_db);
 								HistoryRecord.insert( MainActivity.IS_RETURN_BICYCLE, RFID, cur.getInt(cur.getColumnIndex("uid")));								
 							}
+							bicycleInfo.update(bicycle_db);
 //							cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo" , null);
 //							while(cur.moveToNext())
 //							{
@@ -165,8 +197,22 @@ public class MainActivity extends Activity {
 //								}
 //							}							
 							break;
+						case 0x40:
+							name = String.valueOf(((int)(buf[10]&0xff))*16 + (int)(buf[11]&0xff));
+							cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name) + " AND RFID != ''", null);
+							if(cur.moveToNext())
+							{
+								byte data[] = new byte[]{0x55,0x00,0x00,0x50,(byte) 0xAA};//failed
+								data[1] = (byte) buf[2];
+								int fd2 = HardwareControler.openSerialPort(MainActivity.SLAVE_UART_PORT, 115200, 8, 1);
+								HardwareControler.write(fd2, data);
+								HardwareControler.close(fd2);
+							}else{
+								BicycleInfo.choose(buf[2]);
+							}
+							break;
 						}
-						bicycleInfo.update(bicycle_db);
+						
 											
 //						cur = MainActivity.bicycle_db.rawQuery("SELECT * FROM bicycleinfo where addr = " + buf[2], null);
 //						while (cur.moveToNext())
@@ -238,6 +284,42 @@ public class MainActivity extends Activity {
 		}
 		
 	}
+	static void playMusic(String FilePath)
+	{
+		MediaPlayer mPlayer = new MediaPlayer();
+		try {
+			mPlayer.setDataSource(FilePath);
+			mPlayer.prepare();
+			mPlayer.start();
+		} catch (IllegalArgumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalStateException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	static void setNameString(String str)
+	{
+		switch(Integer.valueOf(str))
+      	{
+      	case 1407:
+      		nameString = USER1;
+      		break;
+      	case 1901:
+      		nameString = USER2;
+      		break;
+      	case 3299:
+      		nameString = USER3;
+      		break;	
+      	default:
+      		nameString = str;
+      		break;     		
+      	}
+	}
 	class CardReaderThread extends Thread
     {
     	public void run()
@@ -278,7 +360,13 @@ public class MainActivity extends Activity {
     	        	{
     	        		message += Integer.toHexString(CardReader.Rx_Buffer[7+i]);    	        		
     	        	}
-      	        	name = String.valueOf(((int)(CardReader.Rx_Buffer[7]&0xff))*16 + (int)(CardReader.Rx_Buffer[8]&0xff));;
+    	        	if(CardReader.Rx_Buffer[7] == 0 && CardReader.Rx_Buffer[8] == 0)
+    	        	{
+    	        		MainActivity.playMusic(MainActivity.MUSIC12);
+    	        		return;//请重刷
+    	        	}
+      	        	name = String.valueOf(((int)(CardReader.Rx_Buffer[7]&0xff))*16 + (int)(CardReader.Rx_Buffer[8]&0xff));      	        	
+      	        	setNameString(name);
     	        /*	
     	        	message += " ATR Data:";
     	        	for(int i=0; i<CardReader.Rx_Buffer[7+CardReader.Rx_Buffer[6]]; i++)
@@ -290,6 +378,7 @@ public class MainActivity extends Activity {
     	        	Log.d(DEBUG_TAG,"message = " + message);
     	        	Log.d(DEBUG_TAG,"length = " + message.length());
     	        	new DataToServer(message).start();
+    	        	MainActivity.playMusic(MainActivity.MUSIC4);
     	    		Intent intent = new Intent();
     	    		intent.setClass(MainActivity.this, SecondActivity.class);
     	    		startActivity(intent);

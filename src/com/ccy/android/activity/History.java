@@ -35,9 +35,14 @@ public class History extends Activity implements OnClickListener {
 		return_btn = (Button) this.findViewById(R.id.return_btn);
 		print_btn.setOnClickListener(this);
 		return_btn.setOnClickListener(this);
-		text = "您好，" + MainActivity.name + "\n" + 
-						"活动  \t\t地点  \t\t时间\n" ;
-		Cursor cur = MainActivity.db.rawQuery("SELECT * FROM record where uid = "+MainActivity.name, null);
+		Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = "+MainActivity.name, null);
+		if(cur.moveToNext())
+		{
+			text = "您好，" + MainActivity.nameString + "\n" + 
+					"您的卡上余额为：" + cur.getInt(cur.getColumnIndex("balance")) + " RMB\n" +
+							"活动  \t\t地点  \t\t时间\n" ;
+		}
+		cur = MainActivity.db.rawQuery("SELECT * FROM record where uid = "+MainActivity.name, null);
 		while (cur.moveToNext())
 		{
 //			Log.i("DEBUG", String.valueOf(cur.getInt(cur.getColumnIndex("_id"))));
@@ -71,13 +76,17 @@ public class History extends Activity implements OnClickListener {
 		{
 		case R.id.print_btn:
 			Toast.makeText(History.this, "数据正在打印，请稍候......", Toast.LENGTH_LONG).show();
-			int fd = HardwareControler.openSerialPort(MainActivity.PRINTER_UART_PORT, 9600, 8, 1);
-	        
+			MainActivity.playMusic(MainActivity.MUSIC5);
+			int fd = HardwareControler.openSerialPort(MainActivity.PRINTER_UART_PORT, 9600, 8, 1);	        
 	        try {
-				HardwareControler.write(fd, RecordItemList.getBytes("GB2312"));
-				String txt = "活动  地点  时间\n您好，" + MainActivity.name + "\n" + 
-				"    \n    \n   \n   \n    \n    \n    \n" ;
-				HardwareControler.write(fd, txt.getBytes("GB2312"));
+	        	Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = "+MainActivity.name, null);
+	    		if(cur.moveToNext())
+	    		{
+					HardwareControler.write(fd, RecordItemList.getBytes("GB2312"));
+					String txt = "活动  地点  时间\n您的卡上余额为：" + cur.getInt(cur.getColumnIndex("balance")) + " RMB\n您好，" + MainActivity.nameString + "\n" + 
+					"    \n    \n   \n   \n    \n    \n    \n" ;
+					HardwareControler.write(fd, txt.getBytes("GB2312"));
+	    		}
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

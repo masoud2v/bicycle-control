@@ -6,55 +6,55 @@
     >
     <TextView     
     android:id="@+id/tv1" 
-    android:textSize="20sp"
+    android:textSize="40sp"
     android:text="hello, SecondActivity"     
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"    
-    android:layout_margin="10dip"	
+    android:layout_margin="20dip"	
     >
     </TextView>
     <Button 
 		android:id="@+id/btn1" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="租赁自行车" 
 		android:layout_below="@id/tv1"
-		android:layout_margin="8dip"	
+		android:layout_margin="30dip"
 		/>
 	<Button 
 		android:id="@+id/btn2" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="电动车充电" 
 		android:layout_toRightOf="@id/btn1"
 		android:layout_below="@id/tv1"
-		android:layout_margin="8dip"	
+		android:layout_margin="30dip"	
 		/>
 	<Button 
 		android:id="@+id/btn3" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="  历史查询  " 
 		android:layout_below="@id/btn1"
-		android:layout_margin="8dip"	
+		android:layout_margin="30dip"	
 		/>
 	<Button 
 		android:id="@+id/btn4" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="     退出      " 
 		android:layout_toRightOf="@id/btn3"
 		android:layout_below="@id/btn1"
-		android:layout_margin="8dip"	
+		android:layout_margin="30dip"	
 		/>
 	<TextView 
 	android:layout_height="wrap_content" 
 	android:layout_width="wrap_content" 
-	android:textSize="20sp" 
+	android:textSize="40sp" 
 	android:id="@+id/tv2" 
 	android:textColor="#aaaa00" 
 	android:text="10" 

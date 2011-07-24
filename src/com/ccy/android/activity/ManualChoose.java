@@ -31,7 +31,7 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.manual);
 		info = (TextView) this.findViewById(R.id.Info);
-		info.setText("您好，"+MainActivity.name+"，请选择：");
+		info.setText("您好，"+MainActivity.nameString+"，请选择：");
 		ok_btn = (Button) this.findViewById(R.id.ok_btn);
 		cancel_btn = (Button) this.findViewById(R.id.cancel_btn);
 		RG = (RadioGroup) this.findViewById(R.id.RadioGroup2);				
@@ -51,9 +51,12 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 			case 0x02:
 				this.findViewById(R.id.r_btn_bike2).setEnabled(false);
 				break;
+			case 0x03:
+				this.findViewById(R.id.r_btn_bike3).setEnabled(false);
+				break;
 			}				
 		}
-		if(cur.getCount() == 2)
+		if(cur.getCount() == MainActivity.BICYCLE_NUMBER)
 		{
 			Toast.makeText(ManualChoose.this, "您好，不好意思，已经没有自行车可供选择，欢迎下次光临！", Toast.LENGTH_LONG).show();
 			finish();
@@ -97,6 +100,9 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 		case R.id.r_btn_bike2:
 			this.checkedId = 2;
 			break;
+		case R.id.r_btn_bike3:
+			this.checkedId = 3;
+			break;
 		}
 		
 	}
@@ -116,7 +122,7 @@ public class ManualChoose extends Activity implements OnClickListener, OnChecked
 		{
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 			i++;
-			if(i==4)i=3;
+			if(i==2 + MainActivity.BICYCLE_NUMBER)i=1 + MainActivity.BICYCLE_NUMBER;
 			break;
 		case KeyEvent.KEYCODE_DPAD_UP:
 			i--;

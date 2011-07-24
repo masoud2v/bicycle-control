@@ -17,6 +17,7 @@ public class RentBicycle extends Activity implements OnClickListener {
 
 	private Button auto_btn;
 	private Button manual_btn;
+	private Button return_btn;
 	private TextView RentInfo;
 	private int i = 0;
 	/* (non-Javadoc)
@@ -32,7 +33,7 @@ public class RentBicycle extends Activity implements OnClickListener {
 		{
 			new AlertDialog.Builder(this)   
 	         .setTitle("租赁信息")   
-	        .setMessage("您好，"+MainActivity.name+"，系统显示您上次租借的"+cur.getString(cur.getColumnIndex("RFID"))+"号自行车尚未归还，请归还后再重新租赁，谢谢！")    
+	        .setMessage("您好，"+MainActivity.nameString+"，系统显示您上次租借的"+cur.getString(cur.getColumnIndex("RFID"))+"号自行车尚未归还，请归还后再重新租赁，谢谢！")    
 	       .setPositiveButton("确定",    
 	        new DialogInterface.OnClickListener(){   
 	                  public void onClick(DialogInterface dialoginterface, int i){    
@@ -40,14 +41,19 @@ public class RentBicycle extends Activity implements OnClickListener {
 	                	  		finish();
 	                              }    
 	                      }).show(); 
+			MainActivity.playMusic(MainActivity.MUSIC13);
+		}else{
+			MainActivity.playMusic(MainActivity.MUSIC9);
 		}
 		RentInfo = (TextView)this.findViewById(R.id.rentInfo);
-		RentInfo.setText("您好，"+MainActivity.name+"，请选择：");
+		RentInfo.setText("您好，"+MainActivity.nameString+"，请选择：");
+		
 		auto_btn = (Button) this.findViewById(R.id.auto);
 		manual_btn = (Button) this.findViewById(R.id.manual);
-		
+		return_btn = (Button) this.findViewById(R.id.return_rent);
 		auto_btn.setOnClickListener(this);
 		manual_btn.setOnClickListener(this);
+		return_btn.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
@@ -69,6 +75,9 @@ public class RentBicycle extends Activity implements OnClickListener {
 			this.startActivity(intent);
 			finish();
 			break;
+		case R.id.return_rent:
+			finish();
+			break;
 		}
 		
 	}
@@ -87,7 +96,7 @@ public class RentBicycle extends Activity implements OnClickListener {
 		{
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 			i++;
-			if(i==2)i=1;
+			if(i==3)i=2;
 			break;
 		case KeyEvent.KEYCODE_DPAD_UP:
 			i--;

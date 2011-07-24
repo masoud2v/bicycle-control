@@ -3,6 +3,7 @@ package com.ccy.android.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -37,18 +38,23 @@ public class SecondActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.second);
 		textView = (TextView) this.findViewById(R.id.tv1);
-		textView.setText("您好，"+MainActivity.name+"，请选择：");	
+		textView.setText("您好，"+MainActivity.nameString+"，请选择：");	
 		TimeOutView = (TextView) this.findViewById(R.id.tv2);
 		TimeOutView.setText("10");
+		
 		btn_get_bicycle = (Button) this.findViewById(R.id.btn1);
 		btn_charge = (Button) this.findViewById(R.id.btn2);
 		btn_history = (Button) this.findViewById(R.id.btn3);
 		btn_exit = (Button) this.findViewById(R.id.btn4);
-		
 		btn_get_bicycle.setOnClickListener(this);
 		btn_charge.setOnClickListener(this);
 		btn_history.setOnClickListener(this);
 		btn_exit.setOnClickListener(this);
+		Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name), null);
+		if(!cur.moveToNext())
+		{
+			UserInfo.insert("", MainActivity.BALANCE);
+		}
 		handler.postDelayed(runnable, 2000);
 	}
 	

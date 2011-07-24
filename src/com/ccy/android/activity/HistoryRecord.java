@@ -59,7 +59,7 @@ public class HistoryRecord {
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("hh:mm:ss");
 		String time = sDateFormat.format(new java.util.Date());
 		Log.i(MainActivity.DEBUG_TAG,time);
-		HistoryRecord historyRecord = new HistoryRecord(uid,"Œ‰∫∫",time,act,rfid);
+		HistoryRecord historyRecord = new HistoryRecord(uid,"…Ó€⁄",time,act,rfid);
 		historyRecord.add(MainActivity.db);
 	}
 }

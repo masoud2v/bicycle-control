@@ -3,14 +3,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dip"
+    android:padding="20dip"
     >
     <TextView     
     android:id="@+id/Info" 
-    android:textSize="20sp"
+    android:textSize="40sp"
     android:text="hello, SecondActivity"     
     android:layout_height="wrap_content"
     android:layout_width="wrap_content" 
+    android:layout_margin="15dip"	
     >
     </TextView>
     <RadioGroup
@@ -24,35 +25,47 @@
     >
     <RadioButton 
 		android:id="@+id/r_btn_bike1" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"		
 		android:text="自行车1" 
+		android:layout_margin="10dip"	
 		/>
 	<RadioButton 
 		android:id="@+id/r_btn_bike2" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:text="自行车2" 
+		android:layout_margin="10dip"	
+		/>
+	<RadioButton 
+		android:id="@+id/r_btn_bike3" 
+		android:textSize="40sp"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:text="自行车3" 
+		android:layout_margin="10dip"	
 		/>
 		</RadioGroup>
 		
 		<Button 
 		android:id="@+id/cancel_btn" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup2"
 		android:text="取消" 
+		android:layout_margin="10dip"	
 		/>
 		<Button 
 		android:id="@+id/ok_btn" 
-		android:textSize="20sp"
+		android:textSize="40sp"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup2"
 		android:layout_toRightOf="@id/cancel_btn"
 		android:text="确定" 
+		android:layout_margin="10dip"	
 		/>
 </RelativeLayout>
