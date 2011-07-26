@@ -14,6 +14,6 @@
     android:text="@string/hello" 
     android:gravity="center_vertical" 
     android:layout_gravity="center" 
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent">
     </TextView>
 </LinearLayout>
