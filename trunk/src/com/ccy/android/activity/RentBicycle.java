@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RentBicycle extends Activity implements OnClickListener {
+public class RentBicycle extends Activity implements OnClickListener, OnFocusChangeListener, OnTouchListener {
 
 	private Button auto_btn;
 	private Button manual_btn;
@@ -52,8 +55,14 @@ public class RentBicycle extends Activity implements OnClickListener {
 		manual_btn = (Button) this.findViewById(R.id.manual);
 		return_btn = (Button) this.findViewById(R.id.return_rent);
 		auto_btn.setOnClickListener(this);
+		auto_btn.setOnFocusChangeListener(this);
+		auto_btn.setOnTouchListener(this);
 		manual_btn.setOnClickListener(this);
+		manual_btn.setOnFocusChangeListener(this);
+		manual_btn.setOnTouchListener(this);
 		return_btn.setOnClickListener(this);
+		return_btn.setOnFocusChangeListener(this);
+		return_btn.setOnTouchListener(this);
 	}
 	@Override
 	public void onClick(View v) {
@@ -109,6 +118,83 @@ public class RentBicycle extends Activity implements OnClickListener {
 		this.findViewById(R.id.auto+i).requestFocus();
 		return super.onKeyUp(keyCode, event);
 		
+	}
+	@Override
+	public void onFocusChange(View v, boolean arg1) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+		case R.id.auto:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.auto_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.auto);
+			}
+			break;
+		case R.id.manual:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.manual_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.manual);
+			}
+			break;
+		
+		case R.id.return_rent:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1);
+			}
+			break;
+		}
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent me) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+		case R.id.auto:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.auto_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.auto);
+			}
+			break;
+		case R.id.manual:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.manual_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.manual);
+			}
+			break;
+		
+		case R.id.return_rent:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1);
+			}
+			break;
+		}
+		return false;
 	}
 	
 }

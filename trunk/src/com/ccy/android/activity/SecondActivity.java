@@ -7,13 +7,16 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 import com.ccy.android.activity.R;
 
-public class SecondActivity extends Activity implements OnClickListener {
+public class SecondActivity extends Activity implements OnClickListener, OnFocusChangeListener, OnTouchListener {
 	private TextView textView;
 	private TextView TimeOutView;
 	private int timeOut = 10;
@@ -47,9 +50,17 @@ public class SecondActivity extends Activity implements OnClickListener {
 		btn_history = (Button) this.findViewById(R.id.btn3);
 		btn_exit = (Button) this.findViewById(R.id.btn4);
 		btn_get_bicycle.setOnClickListener(this);
+		btn_get_bicycle.setOnFocusChangeListener(this);
+		btn_get_bicycle.setOnTouchListener(this);
 		btn_charge.setOnClickListener(this);
+		btn_charge.setOnFocusChangeListener(this);
+		btn_charge.setOnTouchListener(this);
 		btn_history.setOnClickListener(this);
+		btn_history.setOnFocusChangeListener(this);
+		btn_history.setOnTouchListener(this);
 		btn_exit.setOnClickListener(this);
+		btn_exit.setOnFocusChangeListener(this);
+		btn_exit.setOnTouchListener(this);
 		Cursor cur = MainActivity.userinfo_db.rawQuery("SELECT * FROM userinfo where uid = " + Integer.valueOf(MainActivity.name), null);
 		if(!cur.moveToNext())
 		{
@@ -83,7 +94,7 @@ public class SecondActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		}
-		this.findViewById(R.id.btn1+i).requestFocus();
+		this.findViewById(R.id.btn1+i).requestFocus();		
 		return super.onKeyUp(keyCode, event);
 		
 	}
@@ -107,6 +118,104 @@ public class SecondActivity extends Activity implements OnClickListener {
 			break;
 		}
 		finish();
+	}
+
+	@Override
+	public void onFocusChange(View v, boolean arg1) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+		case R.id.btn1:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.rent_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.rent);
+			}
+			break;
+		case R.id.btn2:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.charge_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.charge);
+			}
+			break;
+		case R.id.btn3:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.history_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.history);
+			}
+			break;
+		case R.id.btn4:
+			if(arg1)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1);
+			}
+			break;
+		}
+		
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent me) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+		case R.id.btn1:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.rent_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.rent);
+			}
+			break;
+		case R.id.btn2:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.charge_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.charge);
+			}
+			break;
+		case R.id.btn3:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.history_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.history);
+			}
+			break;
+		case R.id.btn4:
+			if(me.getAction() == MotionEvent.ACTION_DOWN)
+			{				
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1_f);
+			}
+			else
+			{
+				this.findViewById(v.getId()).setBackgroundResource(R.drawable.return1);
+			}
+			break;
+		}
+		return false;
 	}
 
 }
