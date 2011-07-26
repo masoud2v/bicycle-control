@@ -306,7 +306,7 @@ public class MainActivity extends Activity {
 	{
 		switch(Integer.valueOf(str))
       	{
-      	case 1407:
+      	case 3835:
       		nameString = USER1;
       		break;
       	case 1901:

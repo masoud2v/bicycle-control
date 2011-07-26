@@ -10,41 +10,50 @@
     android:textSize="40sp"
     android:text="hello, SecondActivity"     
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content" 
+    android:layout_width="fill_parent" 
     >
     </TextView>
    
-	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="20dip"
+    >
 	<Button
 	android:id="@+id/auto"
 	android:textSize="40sp"
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content"
-	android:text="自动选车" 
+	android:text="" 
 	android:layout_margin="20dip"	
 	android:gravity="center_vertical" 
     android:layout_gravity="center" 
+    android:background="@drawable/auto"    
 	/>
 	<Button
 	android:id="@+id/manual"
 	android:textSize="40sp"
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content"
-	android:text="手动选车" 
+	android:text="" 
 	android:layout_margin="20dip"	
 	android:gravity="center_vertical" 
     android:layout_gravity="center" 
+    android:background="@drawable/manual"   
 	/>
 	<Button
 	android:id="@+id/return_rent"
 	android:textSize="40sp"
 	android:layout_width="wrap_content" 
 	android:layout_height="wrap_content"
-	android:text="   返回    " 
+	android:text="" 
 	android:layout_margin="20dip"	
 	android:gravity="center_vertical" 
     android:layout_gravity="center" 
+    android:background="@drawable/return1"  
 	/>
+	</LinearLayout>
 	<TextView 
 	android:layout_height="wrap_content" 
 	android:layout_width="wrap_content" 

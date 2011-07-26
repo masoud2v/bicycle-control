@@ -65,7 +65,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/RadioGroup"
 		android:layout_toRightOf="@id/cancel1_btn"
-		android:text="确定" 
+		android:text="确认" 
 		android:layout_margin="10dip"	
 		/>
 </RelativeLayout>
